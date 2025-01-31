@@ -1,0 +1,7 @@
+title="1984"
+author="George Orwell"
+genre="Dystopian"
+type=[true,false]
+description="A dystopian novel depicting a totalitarian future society."
+cur_borrower=""
+all_borrower=[""]

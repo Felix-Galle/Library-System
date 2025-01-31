@@ -1,0 +1,7 @@
+title="Pride and Prejudice"
+author="Jane Austen"
+genre="Romance"
+type=[true,false]
+description="A classic romance novel about Elizabeth Bennet and Mr. Darcy."
+cur_borrower=""
+all_borrower=[""]
