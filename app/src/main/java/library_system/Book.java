@@ -79,7 +79,7 @@ package library_system;
 
         public static List<BookInfo> getBooks() {
             List<BookInfo> books = new ArrayList<>();
-            Path bookDataDir = Paths.get("data", "bookdata");
+            Path bookDataDir = Paths.get("..../data/bookdata");
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(bookDataDir)) {
                 for (Path filePath : stream) {
                     if (Files.isRegularFile(filePath)) {
@@ -103,7 +103,13 @@ package library_system;
                                 } else if (line.startsWith("type=[")) {
                                     String[] typeStr = line.substring(6, line.length() - 1).split(",");
                                     for (String s : typeStr) {
-                                        type.add(Boolean.parseBoolean(s.trim()));
+                                        // Normalize the input and parse into boolean
+                                        s = s.trim().toLowerCase();
+                                        if (s.equals("true") || s.equals("1") || s.equals("yes")) {
+                                            type.add(true);
+                                        } else {
+                                            type.add(false);
+                                        }
                                     }
                                 } else if (line.startsWith("description=")) {
                                     description = line.substring(12, line.length() - 1);
@@ -112,6 +118,7 @@ package library_system;
                                 } else if (line.startsWith("all_borrower=")) {
                                     all_borrower = new LinkedList<>();
                                 }
+                                // Ensure that all necessary fields are populated before breaking
                                 if (title != null && author != null && genre != null && type != null && description != null && cur_borrower != null && all_borrower != null) {
                                     break;
                                 }
@@ -125,6 +132,7 @@ package library_system;
             }
             return books;
         }
+        
             // Output: Returns a list of all book information.
         // Input: None
         
