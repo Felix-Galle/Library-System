@@ -1,0 +1,7 @@
+title="The Lord of the Rings"
+author="J.R.R. Tolkien"
+genre="Fantasy"
+type=[true,true]
+description="A classic high fantasy novel about a hobbit's quest to destroy the One Ring."
+cur_borrower=""
+all_borrower=[""]

@@ -1,0 +1,7 @@
+title="The Adventures of Huckleberry Finn"
+author="Mark Twain"
+genre="Adventure"
+type=[true,true]
+description="A classic adventure novel about a young boy's journey down the Mississippi River."
+cur_borrower=""
+all_borrower=[""]

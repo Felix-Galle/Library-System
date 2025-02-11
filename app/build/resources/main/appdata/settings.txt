@@ -1,0 +1,6 @@
+stage.title=My Main Window
+stage.width=800
+stage.height=600
+stage.x=100
+stage.y=100
+stage.resizable=true

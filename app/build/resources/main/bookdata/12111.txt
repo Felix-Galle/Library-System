@@ -1,0 +1,7 @@
+title="Jane Eyre"
+author="Charlotte Brontë"
+genre="Romance"
+type=[true,false]
+description="A classic romance novel about a young woman's journey to independence and love."
+cur_borrower=""
+all_borrower=[""]

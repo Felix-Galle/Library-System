@@ -1,0 +1,5 @@
+Lname = Zoom
+Fname = Ryan
+grade = 12
+cur_loanList = 
+all_LoanList = 

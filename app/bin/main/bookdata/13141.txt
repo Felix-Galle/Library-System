@@ -1,0 +1,7 @@
+title="Moby-Dick"
+author="Herman Melville"
+genre="Adventure"
+type=["Classic","Novel"]
+description="A classic adventure novel about a whale hunter's obsession with a white whale."
+cur_borrower=""
+all_borrower=[""]

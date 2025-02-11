@@ -1,0 +1,7 @@
+title="Wuthering Heights"
+author="Emily Brontë"
+genre="Romance"
+type=[true,true]
+description="A classic romance novel about the tumultuous relationship between Catherine and Heathcliff."
+cur_borrower=""
+all_borrower=[""]

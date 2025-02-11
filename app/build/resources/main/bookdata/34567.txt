@@ -1,0 +1,7 @@
+title="The Great Gatsby"
+author="F. Scott Fitzgerald"
+genre="Fiction"
+type=[true,false]
+description="A classic novel set in the roaring twenties about the American Dream."
+cur_borrower=""
+all_borrower=[""]

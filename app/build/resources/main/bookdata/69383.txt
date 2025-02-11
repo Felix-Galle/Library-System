@@ -1,0 +1,7 @@
+title="null"
+author="null"
+genre="null"
+type=["null"]
+description="null"
+cur_borrower=""
+all_borrower=[""]

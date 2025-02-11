@@ -1,0 +1,7 @@
+title="The Catcher in the Rye"
+author="J.D. Salinger"
+genre="Coming-of-Age"
+type=[true,false]
+description="A classic coming-of-age novel about teenage angst and rebellion."
+cur_borrower=""
+all_borrower=[""]

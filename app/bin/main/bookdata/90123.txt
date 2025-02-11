@@ -1,0 +1,7 @@
+title="The Picture of Dorian Gray"
+author="Oscar Wilde"
+genre="Philosophical"
+type=[true,true]
+description="A classic philosophical novel about the nature of beauty and morality."
+cur_borrower=""
+all_borrower=[""]
