@@ -23,7 +23,7 @@ public static void addUser(String userID, String Lname, String Fname, String gra
     
 
     String hashedID = Pass.hashPass(userID);
-    String filePath = "data\\userdata\\" + hashedID + ".txt";
+    String filePath = "src\\main\\resources\\userdata\\" + hashedID + ".txt";
     File file = new File(filePath);
     File dir = file.getParentFile();
     if (!dir.exists()) {
@@ -42,8 +42,7 @@ public static void addUser(String userID, String Lname, String Fname, String gra
 
     public static void editUser(String userID, String Lname, String Fname, String grade) {
         
-        System.out.println("data\\userdata\\" + userID + ""); // TODO Remove, just for testing.
-        try (BufferedReader reader = new BufferedReader(new FileReader("data\\userdata\\" + userID + ""))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src\\\\main\\\\resources\\\\userdata\\\\" + userID))) {
             
             String line;
             StringBuilder content = new StringBuilder();
@@ -60,7 +59,7 @@ public static void addUser(String userID, String Lname, String Fname, String gra
                 }
             }
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("data\\userdata\\" + userID + ""))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\\\main\\\\resources\\\\userdata\\\\" + userID))) {
                 writer.write(content.toString());
             }
 
@@ -72,7 +71,7 @@ public static void addUser(String userID, String Lname, String Fname, String gra
 
     public static void removeUser(String userID) {
         String hashedID = Pass.hashPass(userID);
-        Path filePath = Paths.get("data\\userdata\\" + hashedID + ".txt");
+        Path filePath = Paths.get("src\\\\main\\\\resources\\\\userdata\\\\" + hashedID + ".txt");
         try {
             java.nio.file.Files.delete(filePath);
         } catch (IOException e) {
@@ -82,7 +81,7 @@ public static void addUser(String userID, String Lname, String Fname, String gra
 
     public static List<UserInfo> getUsers() {
         List<UserInfo> users = new ArrayList<>();
-        Path userDataDir = Paths.get("data\\userdata");
+        Path userDataDir = Paths.get("src\\\\main\\\\resources\\\\userdata\\\\");
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(userDataDir)) {
             for (Path filePath : stream) {
                 if (Files.isRegularFile(filePath)) {

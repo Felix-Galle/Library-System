@@ -1,7 +1,5 @@
 package library_system;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,11 +15,9 @@ import java.util.stream.Collectors;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 public class BrowsePage {
     private JPanel browsePage;
@@ -31,8 +27,9 @@ public class BrowsePage {
     private JButton genreButton;
     private JButton authorButton;
     private JButton formatButton;
-    private JTable bookTable;
-    private DefaultTableModel tableModel;
+    private JPanel booksPanel;
+    private JPanel bookDetailsPanel;
+    private Book.BookInfo selectedBook;
 
     public BrowsePage(JFrame mainWindow) {
         browsePage = new JPanel();
@@ -44,7 +41,7 @@ public class BrowsePage {
         spacerBar.setLayout(new FlowLayout(FlowLayout.CENTER, 24, 40));
         browsePage.add(spacerBar, BorderLayout.NORTH);
 
-        // Create the center panel
+        // Create the center panel for search bar and filter buttons
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
@@ -79,7 +76,6 @@ public class BrowsePage {
 
         searchBar.add(searchField);
         searchBar.add(goButton);
-
         centerPanel.add(searchBar);
 
         // Create the filter bar
@@ -101,33 +97,24 @@ public class BrowsePage {
         filterBar.add(genreButton);
         filterBar.add(authorButton);
         filterBar.add(formatButton);
-
         centerPanel.add(filterBar);
 
-        // Create the book table
-        tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"Book ID", "Title", "Author", "Genre", "Type", "Actions"});
-        bookTable = new JTable(tableModel) {
-            public boolean isCellEditable(int row, int column) {
-                return false; // Make the table non-editable
-            }
-        };
-        bookTable.setPreferredScrollableViewportSize(new Dimension(1000, 300));
-        bookTable.setFillsViewportHeight(true);
-
-        JScrollPane scrollPane = new JScrollPane(bookTable);
-        centerPanel.add(scrollPane);
+        // Create the book display panel (books shown in horizontal layout)
+        booksPanel = new JPanel();
+        booksPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        centerPanel.add(booksPanel);
 
         browsePage.add(centerPanel, BorderLayout.CENTER);
 
+        // Create the bottom panel for displaying book details (centered layout)
+        bookDetailsPanel = new JPanel();
+        bookDetailsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // This centers the content horizontally
+        bookDetailsPanel.setBackground(Color.decode("#f9f9f9"));
+        bookDetailsPanel.setPreferredSize(new Dimension(0, 200));
+        browsePage.add(bookDetailsPanel, BorderLayout.SOUTH);
+
         // Load initial books
         loadBooks(Book.getBooks());
-
-        // Create the books bar
-        JPanel booksBar = new JPanel();
-        booksBar.setBackground(Color.decode("#afffff"));
-        booksBar.setLayout(new FlowLayout(FlowLayout.CENTER, 24, 20));
-        booksBar.setPreferredSize(new Dimension(0, 300));
-        browsePage.add(booksBar, BorderLayout.SOUTH);
     }
 
     private void setupFilterButton(JButton button, String filterType) {
@@ -144,9 +131,33 @@ public class BrowsePage {
     }
 
     private void loadBooks(List<Book.BookInfo> books) {
+        booksPanel.removeAll(); // Clear the panel before loading new books
+
         for (Book.BookInfo book : books) {
-            tableModel.addRow(new Object[]{book.getBookID(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getType(), "View"});
+            JPanel bookPanel = new JPanel();
+            bookPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+            bookPanel.setPreferredSize(new Dimension(250, 120));
+
+            JLabel titleLabel = new JLabel(book.getTitle());
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+            JLabel authorLabel = new JLabel(book.getAuthor());
+            authorLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+
+            JButton detailsButton = new JButton("View Details");
+            detailsButton.setFont(new Font("Arial", Font.BOLD, 12));
+            detailsButton.addActionListener((ActionEvent e) -> {
+                showBookDetails(book);
+            });
+
+            bookPanel.add(titleLabel);
+            bookPanel.add(authorLabel);
+            bookPanel.add(detailsButton);
+            booksPanel.add(bookPanel);
         }
+
+        // Revalidate and repaint the panel to update the UI
+        booksPanel.revalidate();
+        booksPanel.repaint();
     }
 
     private void searchBooks() {
@@ -156,7 +167,6 @@ public class BrowsePage {
                         || book.getAuthor().toLowerCase().contains(query.toLowerCase())
                         || book.getGenre().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
-        tableModel.setRowCount(0);
         loadBooks(filteredBooks);
     }
 
@@ -177,9 +187,51 @@ public class BrowsePage {
                     }
                 })
                 .collect(Collectors.toList());
-        tableModel.setRowCount(0);
         loadBooks(filteredBooks);
     }
+
+    private void showBookDetails(Book.BookInfo book) {
+    selectedBook = book;
+
+    // Clear the current details panel
+    bookDetailsPanel.removeAll();
+
+    // Set the background color for better contrast
+    bookDetailsPanel.setBackground(Color.decode("#f9f9f9"));
+
+    // Add FlowLayout to center the components horizontally
+    bookDetailsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
+    // Display the book details (excluding the "Actions")
+    JLabel genreLabel = new JLabel("Genre: " + book.getGenre());
+    genreLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    genreLabel.setForeground(Color.BLACK);
+
+    JLabel bookIdLabel = new JLabel("Book Id:"+ (book.getBookID()));
+    bookIdLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    bookIdLabel.setForeground(Color.BLACK);
+
+    JLabel fictionNonFictionLabel = new JLabel("Fiction/Non-Fiction: " + (book.getType().get(0) ? "Fiction" : "Non-Fiction"));
+    fictionNonFictionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    fictionNonFictionLabel.setForeground(Color.BLACK);
+
+    JLabel paperbackHardcoverLabel = new JLabel("Paperback/Hardcover: " + (book.getType().get(1) ? "Paperback" : "Hardcover"));
+    paperbackHardcoverLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    paperbackHardcoverLabel.setForeground(Color.BLACK);
+
+    // Add spacing between each detail for better readability
+    bookDetailsPanel.add(bookIdLabel);
+    bookDetailsPanel.add(genreLabel);
+    bookDetailsPanel.add(fictionNonFictionLabel);
+    bookDetailsPanel.add(paperbackHardcoverLabel);
+
+    // Add some vertical space between the text fields
+    bookDetailsPanel.add(new JLabel(" "));
+
+    // Revalidate and repaint the details panel to update the UI
+    bookDetailsPanel.revalidate();
+    bookDetailsPanel.repaint();
+}
 
     public JPanel getBrowsePage() {
         return browsePage;

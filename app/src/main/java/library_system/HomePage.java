@@ -29,18 +29,12 @@ public class HomePage {
         homePage.add(homeLabel, BorderLayout.CENTER);
 
         // Load the image
-        Path ImagePath = Paths.get(System.getProperty("user.dir") + "\\data\\appdata\\HomePage_book.png");
-        ImageIcon imageIcon = new ImageIcon(ImagePath.toString());
+        ImageIcon imageIcon = new ImageIcon("src\\\\main\\\\resources\\\\appdata\\\\HomePage_book.png");
+        // Create a JLabel to hold the image
+        JLabel imageLabel = new JLabel(imageIcon);
+        // Add the image label to the homePage panel
+        homePage.add(imageLabel, BorderLayout.CENTER); // You can change the position as needed
 
-        // Check if the image was loaded
-        if (imageIcon.getIconWidth() == -1) {
-            System.out.println("Image not found!");
-        } else {
-            // Create a JLabel to hold the image
-            JLabel imageLabel = new JLabel(imageIcon);
-            // Add the image label to the homePage panel
-            homePage.add(imageLabel, BorderLayout.SOUTH); // You can change the position as needed
-        }
 
         // Revalidate and repaint the panel
         homePage.revalidate();

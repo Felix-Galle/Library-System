@@ -146,8 +146,6 @@ public class TerminalLog {
         if (terminalLogStage != null && terminalLogStage.isShowing()) {
             updateLogText();
             inputField.setText(""); // Clear the input field
-        } else {
-            return;
         }
     }
 

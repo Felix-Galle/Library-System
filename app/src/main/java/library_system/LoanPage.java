@@ -1,7 +1,5 @@
 package library_system;
 
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -130,32 +128,103 @@ public class LoanPage {
         loanPage.add(booksBar, BorderLayout.SOUTH);
     }
     
-    //Supplementary methods 'backend'
+    // Loaning method
     private void loanBook() {
         String borrowerId = borrowerIdField.getText();
         String bookId = bookIdField.getText();
 
         if (!borrowerId.isEmpty() && !bookId.isEmpty()) {
-            // Loan book logic here
+            // Find the user by ID
+            User.UserInfo user = null;
+            for (User.UserInfo u : User.getUsers()) {
+                if (u.getUserID().equals(borrowerId)) {
+                    user = u;
+                    break;
+                }
+            }
+
+            if (user == null) {
+                JOptionPane.showMessageDialog(null, "User not found.");
+                return;
+            }
+
+            // Check if the user has already borrowed 5 books
+            if (user.getCur_books().size() >= 5) {
+                JOptionPane.showMessageDialog(null, "User has already borrowed 5 books.");
+                return;
+            }
+
+            // Check if the book is available
+            Book book = Book.getBook(bookId); // Assuming Book.getBook() returns a Book object
+            if (book == null) {
+                JOptionPane.showMessageDialog(null, "Book not found.");
+                return;
+            }
+
+            // Loan the book to the user
+            book.loanBook(borrowerId); // Call to loanBook method in Book.java
+            user.getCur_books().add(bookId); // Add book to the user's current loan list
+
+            // Save changes to the user data
+            User.editUser(borrowerId, user.getLname(), user.getFname(), user.getGrade());
+
+            // Update the table to reflect the loan
             tableModel.addRow(new Object[]{borrowerId, bookId, "Loan Date", "Return Date"});
+
+            JOptionPane.showMessageDialog(null, "Book loaned successfully.");
         } else {
             JOptionPane.showMessageDialog(null, "Please enter both borrower ID and book ID");
         }
     }
 
+    // Returning method
     private void returnBook() {
         String borrowerId = borrowerIdField.getText();
         String bookId = bookIdField.getText();
 
         if (!borrowerId.isEmpty() && !bookId.isEmpty()) {
-            // Return book logic here
+            // Find the user by ID
+            User.UserInfo user = null;
+            for (User.UserInfo u : User.getUsers()) {
+                if (u.getUserID().equals(borrowerId)) {
+                    user = u;
+                    break;
+                }
+            }
+
+            if (user == null) {
+                JOptionPane.showMessageDialog(null, "User not found.");
+                return;
+            }
+
+            // Check if the user has borrowed the book
+            if (!user.getCur_books().contains(bookId)) {
+                JOptionPane.showMessageDialog(null, "This book was not borrowed by the user.");
+                return;
+            }
+
+            // Return the book
+            Book book = Book.getBook(bookId); // Assuming Book.getBook() returns a Book object
+            if (book != null) {
+                book.returnBook(borrowerId,bookId); // Call to returnBook method in Book.java
+            }
+
+            // Remove the book from the user's current loans
+            user.getCur_books().remove(bookId);
+
+            // Save changes to the user data
+            User.editUser(borrowerId, user.getLname(), user.getFname(), user.getGrade());
+
+            // Update the table to reflect the return
             tableModel.addRow(new Object[]{borrowerId, bookId, "Loan Date", "Return Date"});
+
+            JOptionPane.showMessageDialog(null, "Book returned successfully.");
         } else {
             JOptionPane.showMessageDialog(null, "Please enter both borrower ID and book ID");
         }
     }
 
-    //return metho to App.java ie. JFrame mainWindow
+    // Return method to App.java (i.e., JFrame mainWindow)
     public JPanel getLoanPage() {
         return loanPage;
     }

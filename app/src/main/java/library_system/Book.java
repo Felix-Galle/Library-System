@@ -3,19 +3,19 @@ package library_system;
 
 
     import java.io.BufferedReader;
-    import java.io.BufferedWriter;
-    import java.io.FileReader;
-    import java.io.FileWriter;
-    import java.io.IOException;
-    import java.nio.file.DirectoryStream;
-    import java.nio.file.Files;
-    import java.nio.file.Path;
-    import java.nio.file.Paths;
-    import java.util.ArrayList;
-    import java.util.LinkedList;
-    import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-    import javax.swing.JOptionPane;
+import javax.swing.JOptionPane;
 
     public class Book {
         private String bookid;
@@ -40,7 +40,7 @@ package library_system;
 
         public static void addBook(String bookid, String title, String author, String genre, List<Boolean> type, String description) {
             // Create a new file for the book
-            Path bookDataDir = Paths.get("data", "bookdata", bookid + ".txt");
+            Path bookDataDir = Paths.get("src\\\\main\\\\resources\\\\bookdata"+ bookid + ".txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(bookDataDir.toFile()))) {
                 writer.write("title=\"" + title + "\"\n");
                 writer.write("author=\"" + author + "\"\n");
@@ -79,7 +79,7 @@ package library_system;
 
         public static List<BookInfo> getBooks() {
             List<BookInfo> books = new ArrayList<>();
-            Path bookDataDir = Paths.get("..../data/bookdata");
+            Path bookDataDir = Paths.get("src\\\\main\\\\resources\\\\bookdata");
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(bookDataDir)) {
                 for (Path filePath : stream) {
                     if (Files.isRegularFile(filePath)) {
@@ -132,7 +132,6 @@ package library_system;
             }
             return books;
         }
-        
             // Output: Returns a list of all book information.
         // Input: None
         
@@ -150,7 +149,7 @@ package library_system;
 
         public static void editBook(String bookid, String newTitle, String author, String genre, List<Boolean> type, String description) {
             // Read the book file
-            Path bookDataDir = Paths.get("data", "bookdata", bookid + ".txt");
+            Path bookDataDir = Paths.get("src\\\\main\\\\resources\\\\bookdata\\\\"+ bookid + ".txt");
             try (BufferedReader reader = new BufferedReader(new FileReader(bookDataDir.toString()))) {
                 String line;
                 StringBuilder content = new StringBuilder();

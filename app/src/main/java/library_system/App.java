@@ -8,16 +8,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -37,34 +30,13 @@ public class App extends JFrame {
     public App() {
         super("Main_Window");
         setDefaultLookAndFeelDecorated(true);
-
-        // Load settings from file
-        Properties settings = new Properties();
-        Path settingsPath = Paths.get(System.getProperty("user.dir") + "\\data\\appdata\\settings.txt");
-        try (BufferedReader br = new BufferedReader(new FileReader(settingsPath.toString()))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("=");
-                settings.put(parts[0], parts[1].trim()); // trim whitespace from the value
-            }
-            setTitle(settings.getProperty("stage.title", "Main_Window")); // provide a default title
-            setSize(Integer.parseInt(settings.getProperty("stage.width", "800")), 
-                     Integer.parseInt(settings.getProperty("stage.height", "600"))); // provide a default size
-            setLocation(Integer.parseInt(settings.getProperty("stage.x", "100")), 
-                         Integer.parseInt(settings.getProperty("stage.y", "100"))); // provide a default location
-            setResizable(Boolean.parseBoolean(settings.getProperty("stage.resizable", "true"))); // provide a default resizability
-        } catch (IOException e) {
-            // Handle error
-            System.err.println("Error: " + e.getMessage());
-            System.out.println("You are unable to change any settings concerning the window.\n(User settings are uneffected.)");
-            setTitle("Main_Window");
-            setSize(800, 600);
-            setLocation(100, 100);
-            setResizable(true);
-            
-        }
+        setTitle("Main_Window");
+        setSize(800, 600);
+        setLocation(100, 100);
+        setResizable(false);
 
         //try to set an app_icon
+        /*
         try {
             // Set the app icon
             String currentDir = System.getProperty("user.dir");
@@ -74,7 +46,7 @@ public class App extends JFrame {
             setIconImage(icon.getImage());
         } catch (Exception e) {
             System.err.println("Error: Couldn't retrieve app_icon.ico");
-        }
+        }*/
 
         // Create the main panel
         JPanel mainPanel = new JPanel();
